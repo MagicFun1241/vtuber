@@ -6,6 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_BASE: ghcr.io/magicfun1241/vtuber
 
 jobs:
   build-tts:
@@ -27,8 +28,8 @@ jobs:
           context: tts
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository }}/tts:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ github.repository }}/tts:latest
+            ${{ env.IMAGE_BASE }}/tts:${{ github.sha }}
+            ${{ env.IMAGE_BASE }}/tts:latest
 
   build-whisper:
     runs-on: ubuntu-latest
@@ -49,5 +50,5 @@ jobs:
           context: whisper
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository }}/whisper:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ github.repository }}/whisper:latest
+            ${{ env.IMAGE_BASE }}/whisper:${{ github.sha }}
+            ${{ env.IMAGE_BASE }}/whisper:latest
