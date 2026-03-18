@@ -17,6 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Read version
+        id: version
+        run: echo "version=$(cat tts/VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -28,7 +32,7 @@ jobs:
           context: tts
           push: true
           tags: |
-            ${{ env.IMAGE_BASE }}/tts:${{ github.sha }}
+            ${{ env.IMAGE_BASE }}/tts:${{ steps.version.outputs.version }}
             ${{ env.IMAGE_BASE }}/tts:latest
 
   build-whisper:
@@ -38,6 +42,10 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        run: echo "version=$(cat whisper/VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
 
       - uses: docker/login-action@v3
         with:
@@ -50,5 +58,5 @@ jobs:
           context: whisper
           push: true
           tags: |
-            ${{ env.IMAGE_BASE }}/whisper:${{ github.sha }}
+            ${{ env.IMAGE_BASE }}/whisper:${{ steps.version.outputs.version }}
             ${{ env.IMAGE_BASE }}/whisper:latest
