@@ -11,7 +11,10 @@ RUN cmake -B build \
     -DGGML_AVX2=OFF \
     -DGGML_FMA=OFF \
     -DGGML_F16C=OFF \
-    -DGGML_NATIVE=OFF && \
+    -DGGML_NATIVE=OFF \
+    -DGGML_CUDA=OFF \
+    -DGGML_VULKAN=OFF \
+    -DGGML_METAL=OFF && \
     cmake --build build --config Release -j$(nproc)
 
 FROM ubuntu:22.04
