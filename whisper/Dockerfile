@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/ggml-org/whisper.cpp.git .
 RUN cmake -B build \
-    -DGGML_AVX=ON \
+    -DGGML_AVX=OFF \
     -DGGML_AVX2=OFF \
     -DGGML_FMA=OFF \
     -DGGML_F16C=OFF \
