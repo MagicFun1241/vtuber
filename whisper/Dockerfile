@@ -16,7 +16,7 @@ RUN cmake -B build \
 
 FROM ubuntu:22.04
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl wget && \
+    apt-get install -y --no-install-recommends curl wget libgomp1 && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/build/bin/ /usr/local/bin/

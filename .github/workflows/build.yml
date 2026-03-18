@@ -21,13 +21,26 @@ jobs:
         id: version
         run: echo "version=$(cat tts/VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
 
+      - name: Check if image exists
+        id: check
+        run: |
+          if docker manifest inspect ${{ env.IMAGE_BASE }}/tts:${{ steps.version.outputs.version }} > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+
       - uses: docker/login-action@v3
+        if: steps.check.outputs.exists == 'false'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: docker/build-push-action@v6
+        if: steps.check.outputs.exists == 'false'
         with:
           context: tts
           push: true
@@ -47,13 +60,26 @@ jobs:
         id: version
         run: echo "version=$(cat whisper/VERSION | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
 
+      - name: Check if image exists
+        id: check
+        run: |
+          if docker manifest inspect ${{ env.IMAGE_BASE }}/whisper:${{ steps.version.outputs.version }} > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+
       - uses: docker/login-action@v3
+        if: steps.check.outputs.exists == 'false'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: docker/build-push-action@v6
+        if: steps.check.outputs.exists == 'false'
         with:
           context: whisper
           push: true
